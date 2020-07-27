@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,13 +50,20 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodViewHold
             imageView = itemView.findViewById(R.id.imageView);
         }
 
-        void bind(Food item) {
+        void bind(final Food item) {
             textView.setText(item.getMenuName());
+            //load image from url โดยใช้ Library Picasso
             Picasso.get()
                     .load(item.getImageUrl())
-                    .resize(50, 50)
-                    .centerCrop()
                     .into(imageView);
+
+            //set onclick แบบง่าย
+            textView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(),String.valueOf(item.getMenuId()),Toast.LENGTH_LONG).show();
+                }
+            });
         }
     }
 }

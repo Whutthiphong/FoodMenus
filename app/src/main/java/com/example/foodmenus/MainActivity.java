@@ -22,6 +22,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //start read data source
         InputStream inputStream = getResources().openRawResource(R.raw.data_test);
         InputStreamReader isReader = new InputStreamReader(inputStream);
         BufferedReader reader = new BufferedReader(isReader);
@@ -31,17 +32,22 @@ public class MainActivity extends AppCompatActivity {
             while ((str = reader.readLine()) != null) {
                 sb.append(str);
             }
-            ArrayList<Food> foods = new ArrayList<Food> ();
+            //end read data source
+
+            //start convert json string to Arraylist
+            ArrayList<Food> foods ;
+            //convert json string โดยใช้ Library Gson
             Gson gson = new Gson();
             foods = gson.fromJson(sb.toString(), new TypeToken<ArrayList<Food>>(){}.getType());
+            Log.e("DATA",foods.toString());//test print log
 
-            Log.e("DATA",foods.toString());
 
-            FoodsAdapter adapter = new FoodsAdapter(foods);
-//            bind recycleView
-            RecyclerView foodRecycleView = findViewById(R.id.foodRecycleView);
+            FoodsAdapter adapter = new FoodsAdapter(foods);//create data adapter and passing data to adapter
+
+            RecyclerView foodRecycleView = findViewById(R.id.foodRecycleView);//bind recycleView
+
             foodRecycleView.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-            foodRecycleView.setAdapter(adapter);
+            foodRecycleView.setAdapter(adapter);//set Adapter
 
         }catch (Exception ex){
             Toast.makeText(getApplicationContext(),ex.getMessage(),Toast.LENGTH_LONG).show();
