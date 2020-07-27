@@ -16,16 +16,18 @@ import java.util.ArrayList;
 
 public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodViewHolder> {
     ArrayList<Food> listFoods;
+    IOnItemClickListener itemClickListener;
 
-    public FoodsAdapter(ArrayList<Food> listFoods) {
+    public FoodsAdapter(ArrayList<Food> listFoods,IOnItemClickListener itemClickListener) {
         this.listFoods = listFoods;
+        this.itemClickListener =itemClickListener;
     }
 
     @NonNull
     @Override
     public FoodViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_item, parent, false);
-        return new FoodViewHolder(v);
+        return new FoodViewHolder(v,itemClickListener);
     }
 
     @Override
@@ -40,14 +42,16 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodViewHold
         return 0;
     }
 
-    public class FoodViewHolder extends RecyclerView.ViewHolder {
+    public class FoodViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         ImageView imageView;
         TextView textView;
+        IOnItemClickListener itemClickListener;
 
-        public FoodViewHolder(@NonNull View itemView) {
+        public FoodViewHolder(@NonNull View itemView,IOnItemClickListener itemClickListener) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
             imageView = itemView.findViewById(R.id.imageView);
+            this.itemClickListener =itemClickListener;
         }
 
         void bind(final Food item) {
@@ -57,13 +61,21 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodViewHold
                     .load(item.getImageUrl())
                     .into(imageView);
 
-            //set onclick แบบง่าย
-            textView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(v.getContext(),String.valueOf(item.getMenuId()),Toast.LENGTH_LONG).show();
-                }
-            });
+//            //set onclick แบบง่าย
+//            textView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Toast.makeText(v.getContext(),String.valueOf(item.getMenuId()),Toast.LENGTH_LONG).show();
+//                }
+//            });
+
+            textView.setOnClickListener(this);
+        }
+
+
+        @Override
+        public void onClick(View v) {
+            itemClickListener.onItemClick(getAdapterPosition());
         }
     }
 }

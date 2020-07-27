@@ -16,8 +16,8 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity implements IOnItemClickListener{
+    ArrayList<Food> foods ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,14 +35,14 @@ public class MainActivity extends AppCompatActivity {
             //end read data source
 
             //start convert json string to Arraylist
-            ArrayList<Food> foods ;
+
             //convert json string โดยใช้ Library Gson
             Gson gson = new Gson();
             foods = gson.fromJson(sb.toString(), new TypeToken<ArrayList<Food>>(){}.getType());
             Log.e("DATA",foods.toString());//test print log
 
 
-            FoodsAdapter adapter = new FoodsAdapter(foods);//create data adapter and passing data to adapter
+            FoodsAdapter adapter = new FoodsAdapter(foods,this);//create data adapter and passing data to adapter
 
             RecyclerView foodRecycleView = findViewById(R.id.foodRecycleView);//bind recycleView
 
@@ -52,5 +52,11 @@ public class MainActivity extends AppCompatActivity {
         }catch (Exception ex){
             Toast.makeText(getApplicationContext(),ex.getMessage(),Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+        Toast.makeText(getApplicationContext(),foods.get(position).getImageUrl(),Toast.LENGTH_LONG).show();
     }
 }
