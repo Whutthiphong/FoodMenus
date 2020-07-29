@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements IOnItemClickListe
             Log.e("DATA",foods.toString());//test print log
 
 
-            FoodsAdapter adapter = new FoodsAdapter(foods,this);//create data adapter and passing data to adapter
+            FoodsAdapter adapter = new FoodsAdapter(foods,this,this);//create data adapter and passing data to adapter
 
             RecyclerView foodRecycleView = findViewById(R.id.foodRecycleView);//bind recycleView
 

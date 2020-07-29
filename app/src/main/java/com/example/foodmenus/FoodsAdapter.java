@@ -1,5 +1,6 @@
 package com.example.foodmenus;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,7 +20,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodViewHold
     ArrayList<Food> listFoods;
     IOnItemClickListener itemClickListener;
 
-    public FoodsAdapter(ArrayList<Food> listFoods,IOnItemClickListener itemClickListener) {
+    public FoodsAdapter(ArrayList<Food> listFoods,IOnItemClickListener itemClickListener,Context context) {
         this.listFoods = listFoods;
         this.itemClickListener =itemClickListener;
     }
@@ -48,7 +49,7 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodViewHold
         TextView textView;
         IOnItemClickListener itemClickListener;
 
-        public FoodViewHolder(@NonNull View itemView,IOnItemClickListener itemClickListener) {
+        public FoodViewHolder(@NonNull View itemView,IOnItemClickListener itemClickListener ) {
             super(itemView);
             textView = itemView.findViewById(R.id.textView);
             imageView = itemView.findViewById(R.id.imageView);
@@ -72,9 +73,9 @@ public class FoodsAdapter extends RecyclerView.Adapter<FoodsAdapter.FoodViewHold
                     //Context ต้นทาง -> SecondActivity ปลายทาง
                     Intent intent = new Intent(imageView.getContext(),SecondActivity.class);
                     // add param  คล้ายๆ dictionary ใน c#
-                    intent.putExtra("MY_KEY",listFoods.get(getAdapterPosition()).getImageUrl());//ส่งURL รูป
+                    intent.putExtra("MY_KEY",listFoods.get(getAdapterPosition()));//ส่งURL รูป
                     //สั่งให้เปิดหน้าใหม่โดนอิงจาก Intent ข้างบน
-                    imageView.getContext().startActivity(intent);
+                    itemView.getContext().startActivity(intent);
                     Toast.makeText(v.getContext(),String.valueOf(item.getMenuId()),Toast.LENGTH_LONG).show();
                 }
             });
